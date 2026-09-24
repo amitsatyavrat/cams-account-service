@@ -6,6 +6,7 @@ import com.cams.account.service.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class AccountController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<AccountResponse> createAccount(
             @Valid @RequestBody AccountRequest request) {
 
@@ -35,6 +37,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<AccountResponse> getAccount(
             @PathVariable Long id) {
 
@@ -43,6 +46,7 @@ public class AccountController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<AccountResponse>> getAllAccounts() {
 
         return ResponseEntity.ok(
@@ -50,6 +54,7 @@ public class AccountController {
     }
 
     @GetMapping("/customer/{customerId}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<AccountResponse>>
     getAccountsByCustomer(
             @PathVariable Long customerId) {
@@ -60,6 +65,7 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AccountResponse> updateAccount(
             @PathVariable Long id,
             @Valid @RequestBody AccountRequest request) {
@@ -71,6 +77,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteAccount(
             @PathVariable Long id) {
 
