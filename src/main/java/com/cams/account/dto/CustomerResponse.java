@@ -10,6 +10,27 @@ public class CustomerResponse {
     private String phone;
     private String status;
 
+    public CustomerResponse() {
+    }
+
+    public CustomerResponse(
+            Long id,
+            String customerNumber,
+            String firstName,
+            String lastName,
+            String email,
+            String phone,
+            String status) {
+
+        this.id = id;
+        this.customerNumber = customerNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
