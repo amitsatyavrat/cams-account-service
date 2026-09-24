@@ -6,6 +6,7 @@ import com.cams.account.dto.AccountResponse;
 import com.cams.account.dto.CustomerResponse;
 import com.cams.account.entity.Account;
 import com.cams.account.exception.AccountNotFoundException;
+import com.cams.account.exception.DuplicateResourceException;
 import com.cams.account.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +36,26 @@ public class AccountService {
                 customerServiceClient.getCustomer(
                         request.getCustomerId());
 
-        // 2. Verify customer is active
+        // 2. Verify customer is active and not a duplicate request
         if (!"ACTIVE".equalsIgnoreCase(
                 customer.getStatus())) {
 
             throw new IllegalArgumentException(
                     "Cannot create account for inactive customer");
+        }
+
+        // check if duplicate
+        if (accountRepository
+                .existsByCustomerIdAndAccountTypeAndCurrency(
+                        request.getCustomerId(),
+                        request.getAccountType(),
+                        request.getCurrency())) {
+
+            throw new DuplicateResourceException(
+                    "Customer already has a "
+                            + request.getAccountType()
+                            + " account in "
+                            + request.getCurrency());
         }
 
         // 3. Generate account number

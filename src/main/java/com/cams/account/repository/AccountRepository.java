@@ -17,4 +17,9 @@ public interface AccountRepository
 
     List<Account> findByCustomerId(
             Long customerId);
+
+    boolean existsByCustomerIdAndAccountTypeAndCurrency(
+            Long customerId,
+            String accountType,
+            String currency);
 }
