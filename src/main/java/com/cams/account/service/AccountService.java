@@ -13,8 +13,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class AccountService {
+
+
+    private static final Logger log =
+            LoggerFactory.getLogger(AccountService.class);
 
     private final AccountRepository accountRepository;
     private final CustomerServiceClient customerServiceClient;
@@ -58,11 +65,22 @@ public class AccountService {
                             + request.getCurrency());
         }
 
+        log.info(
+                "Customer validation successful for customerId={}",
+                request.getCustomerId()
+        );
+
         // 3. Generate account number
         String accountNumber =
                 generateAccountNumber();
 
         // 4. Create account
+        log.info(
+                "Creating account for customerId={}, accountType={}, currency={}",
+                request.getCustomerId(),
+                request.getAccountType(),
+                request.getCurrency()
+        );
         Account account = new Account(
                 accountNumber,
                 request.getCustomerId(),
@@ -75,6 +93,12 @@ public class AccountService {
         // 5. Persist
         Account savedAccount =
                 accountRepository.save(account);
+
+        log.info(
+                "Account created successfully. accountNumber={}, customerId={}",
+                savedAccount.getAccountNumber(),
+                savedAccount.getCustomerId()
+        );
 
         return mapToResponse(savedAccount);
     }
