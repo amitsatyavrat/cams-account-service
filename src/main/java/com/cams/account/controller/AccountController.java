@@ -3,6 +3,7 @@ package com.cams.account.controller;
 import com.cams.account.dto.AccountRequest;
 import com.cams.account.dto.AccountResponse;
 import com.cams.account.service.AccountService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
+@SecurityRequirement(name = "bearerAuth")
 public class AccountController {
 
     private final AccountService accountService;
